@@ -1,0 +1,21 @@
+{{>header}}
+  <body>
+  	<h1>Matricular un curso</h1>
+    <form action="/matricular" method="post">
+      <div>
+        <input type="text" name="documento" placeholder="Documento de identidad" size="30" required>
+      </div>
+      <div>
+        <input type="text" name="nombre" placeholder="Nombre completo" size="30" required></div>
+      <div>
+        <input type="text" name="correo" placeholder="Correo electronico" size="30" required>
+      </div>
+      <div>
+        <input type="number" name="telefono" placeholder="Teléfono" size="30" required>
+      </div>
+      
+      {{{matricularCursos}}}
+      <button>Matricular</button>
+    </form>
+  	 	
+    {{>footer}}

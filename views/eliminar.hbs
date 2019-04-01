@@ -1,0 +1,25 @@
+{{>header}}
+  <body>
+  	<h1>Crear un curso</h1>
+  	<form action="/crearcurso" method="post">
+  		<div>
+        <br>
+  			<input type="number" name="idcurso" placeholder="Código del curso" required >
+  		</div>
+  		<div>
+        <input type="text" name="id" placeholder="Documento de identidad" size="30" required>
+      </div>
+  		<div>
+        <br>
+         <select name="modalidad" >
+          <option value="Virtual">Virtual</option>
+          <option value="Presencial">Presencial</option>
+        </select>
+  			
+  		</div>
+  		
+  		<button >Eliminar</button>
+  	</form>
+  
+  	
+   {{>footer}}

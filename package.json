@@ -1,5 +1,5 @@
 {
-  "name": "repositorio",
+  "name": "servidor",
   "version": "1.0.1",
   "description": "primer trabajo",
   "main": "index.js",
@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "hbs": "^4.0.3",
     "yargs": "^13.2.2"
-  }
+  },
+  "devDependencies": {}
 }
