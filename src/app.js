@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const hbs= require('hbs');
 const bodyParser = require('body-parser');
+const port = process.env.PORT || 3000;
 require('./helpers');
 
 
@@ -66,6 +67,6 @@ app.post('/crearcurso',(req, res)=>{
 	});
 });
 
-app.listen(3000,() =>{
-	console.log('Escuchando en el puerto 3000');
-} )
+app.listen(port,() =>{
+	console.log('Escuchando en el puerto' + port);
+} );
