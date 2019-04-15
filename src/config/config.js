@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'local'){
 	urlDB = 'mongodb://localhost:27017/plataformavirtual';
 }
 else {
-	urlDB = 'mongodb+srv://luvivianaraujo:luviarag4413/*@clusterplataformavirtual-ix6si.mongodb.net/plataformavirtual?retryWrites=true'
+	urlDB = 'mongodb+srv://luvivianaraujo:luviarag4413/*@clusterplataformavirtual-ix6si.mongodb.net/plataformavirtual'
 }
 
 process.env.URLDB = urlDB
