@@ -7,16 +7,24 @@
     stylesheet" >
   </head>
   <body>
-  	<h1>Bienvenidos</h1>
-  	<p>
-  		Sistemas de matriculas TDEA virtual
-  	</p>
-    <br>
-    <br>
-    <br>
-  	<button onclick="location.href='/coordinador'" >Crear curso</button>
-  	<button onclick="location.href='/aspirante'">Matricular</button>
-  	<button onclick="location.href='/interesado'">Ver cursos</button>
-  	<button onclick="location.href='/matriculados'">Ver matriculados</button>
-   {{>footer}}
+     <h1>Bienvenidos</h1>
+      <p>
+        Sistemas de matriculas TDEA virtual
+      </p>
+      <br>
+      <br>
+      <br>
+      <form action="/login" method="post">
+          <div class="form-group">
+            <input type="number"   name="documento" placeholder="documento" required><br>   
+              <input type="text"  name="password" placeholder="Contraseña" required><br>       
+             <br>
+             <button>Iniciar sesion</button>
+             <br>
+             <a href="/registrarUsuario">Registrate</a>
+         </div>
+         <br>
+         <br>
+      </form>
+      {{>footer}} 
 

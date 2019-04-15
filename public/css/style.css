@@ -24,6 +24,12 @@ form{
   	font-size: 1.25em
 }
 
+select{
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 300px;
+  height: 30px;
+}
 button {
   background: #054C26;
   color: #fff;
@@ -36,7 +42,17 @@ button {
   margin-top: 20px;
   margin-left: 20px;
 }
-
+input {
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 300px;
+  height: 30px;
+}
+a {
+  margin-top: 20px;
+  margin-left: 20px;
+ 
+}
 .content {
   padding: 0 18px;
   display: none;

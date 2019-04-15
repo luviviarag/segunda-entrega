@@ -1,0 +1,29 @@
+{{>header}}
+  <body>
+  	<h1>Registrate</h1>
+  	<form action="/registrado" method="post">
+  		<div>
+        <br>
+  			<input type="number" name="documento" placeholder="Número documento" required >
+  		</div>
+  		<div>
+  			<br>
+        <input type="text" name="nombre" placeholder="Nombre completo" required>
+  		</div>
+  		<div>
+        <br>
+  			<input type="text" name="correo" placeholder="Correo" required>
+  		</div>
+  		<div>
+        <br>
+  			<input type="text" name="telefono" placeholder="Teléfono" required>
+  		</div>
+      <div>
+        <br>
+        <input type="text" name="contrasena" placeholder="Contraseña" required>
+      </div>
+  		<button >Registrar</button>
+  	</form>
+  
+  	
+   {{>footer}}

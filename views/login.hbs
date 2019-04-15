@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang = 'en'>
+  <head>
+    <meta charset="uft-8"/>
+    <title>Segundo ejercicio </title>
+    <link href="css/style.css" rel="
+    stylesheet" >
+     <h1>Bienvenidos</h1>
+      <p>
+        Sistemas de matriculas TDEA virtual
+    </p>  
+  </head>
+  <body>
+      <br>
+      {{#if sesion}}
+       <form class="form-inline my-2 my-lg-0" action="/salir" method="get">
+          <h3>{{nombre}}</h3>             
+          <a href="/salir">Salir</a>
+       </form>
+       <br>
+       <br>
+       <br>
+        {{#if coordinador}}   
+          <button onclick="location.href='/matriculados'">Ver matriculados</button>
+          <button onclick="location.href='/coordinador'" >Crear curso</button>
+          <button onclick="location.href='/actualizar'" >Cerrar curso</button>
+          <button >Eliminar interesado</button>
+          <button onclick="location.href='/interesado'">Cursos disponibles</button>
+        {{else}}
+          {{#if aspirante}}
+            <button onclick="location.href='/interesado'">Ver cursos</button>
+          {{else}}
+            <button onclick="location.href='/aspirante'">Matricular</button>
+          {{/if}}
+        {{/if}}
+      {{else}}
+      <p>{{mensaje}}</p>
+      {{/if}}
+    </div>
+   {{>footer}}

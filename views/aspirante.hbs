@@ -1,20 +1,27 @@
 {{>header}}
   <body>
-  	<h1>Matricular un curso</h1>
+  	<label>Matricular un curso</label>
     <form action="/matricular" method="post">
       <div>
-        <input type="text" name="documento" placeholder="Documento de identidad" size="30" required>
+        <label>Documento</label>
+        <input type="text" name="documento" placeholder="Documento de identidad" size="30" required readonly value="{{documento}}">
       </div>
       <div>
-        <input type="text" name="nombre" placeholder="Nombre completo" size="30" required></div>
-      <div>
-        <input type="text" name="correo" placeholder="Correo electronico" size="30" required>
+        <label>Nombre   </label>
+        <input type="text" name="nombre" placeholder="Nombre" size="30" required readonly value="{{nombre}}">
       </div>
       <div>
-        <input type="number" name="telefono" placeholder="Teléfono" size="30" required>
+        <label>Correo   </label>
+        <input type="text" name="correo" placeholder="Correo" size="30" required  value="{{correo}}">
       </div>
-      
-      {{{matricularCursos}}}
+      <div>
+        <label>Teléfono </label>
+        <input type="text" name="telefono" placeholder="Teléfono" size="30" required  value="{{telefono}}">
+      </div>
+      <div>
+           {{{matricularCursos listado }}}
+      </div>
+      <br>
       <button>Matricular</button>
     </form>
   	 	

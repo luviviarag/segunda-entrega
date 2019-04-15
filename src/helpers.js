@@ -1,61 +1,10 @@
 const hbs = require('hbs');
 const fs = require ('fs');
+const Curso = require('./modelos/curso');
 listaCursos = [];
 listaMatriculas = [];
 
-hbs.registerHelper('crearcurso',(id,nombre,descripcion,valor,modalidad,intesidad,estado)=>{
-	listarCursos();
-	let texto = "";
-	let cur = {
-		nombre: 	 nombre,
-		id: 		 id,
-		descripcion: descripcion,
-		valor: 		 valor,
-		modalidad: 	 modalidad,
-		duracion: 	 intesidad,
-		estado: 	 estado
-	};
-	let duplicado = listaCursos.find(nom => nom.id == id)
-
-	if(!duplicado){
-		listaCursos.push(cur);
-		guardar();
-		texto ="Se creó el curso de " +nombre ;
-		return texto;
-	}
-	else{
-			texto = "Ya existe otro curso con el mismo id";
-		return texto;
-	}
-})
-
-hbs.registerHelper('matricular',(documento, nombre, correo, telefono, idcurso)=>{
-	listarMatricular();
-	let texto = "";
-	let matr = {
-		
-		documento: 	documento,
-		nombre: 	nombre,
-		correo: 	correo,
-		telefono: 	telefono,
-		idcurso: 	idcurso
-	};
-	let duplicado = listaMatriculas.find(mat => mat.documento == documento && mat.idcurso == idcurso)	
-	if(!duplicado){
-		listaMatriculas.push(matr);
-		matricularM();
-		texto ="Su matricula se realizó con exito";
-		return texto;
-	}
-	else{
-		texto= "Ya se encuentra matriculado en otro curso";
-		return texto; 
-	}
-})
-
-hbs.registerHelper('listarMatriculados',()=>{
-	listarCursos();
-	listarMatricular();
+hbs.registerHelper('listarMatriculados',(listado, listadocursos)=>{
 	let mtriculados = " ";
 	let texto = '<table> \
 				<thead>\
@@ -63,12 +12,13 @@ hbs.registerHelper('listarMatriculados',()=>{
 				<th>Estado</th>\
 				<th>Inscritos</th>\
 				</thead>';
-	listaCursos.forEach(curso =>{
+	listadocursos.forEach(curso =>{
+		mtriculados = " ";
 		texto = texto +
 				'<tr>' +
 				'<td>' + curso.nombre + '</td>' +
 				'<td>' + curso.estado + '</td>';
-		let mat = listaMatriculas.filter(buscar => buscar.idcurso == curso.id)
+		let mat = listado.filter(buscar => buscar.curso == curso.id)
 		if(mat.length == 0){
 			mtriculados = 'No hay personas inscritas';
 		}
@@ -84,10 +34,13 @@ hbs.registerHelper('listarMatriculados',()=>{
 	return texto;
 
 })
-hbs.registerHelper('listarcursos',()=>{
-	listarCursos();
+hbs.registerHelper('listarcursos',(listado)=>{
 	let texto = '<div class="row">';
-	listaCursos.forEach(curso =>{
+	if(listado.length ==0){
+		texto = '<p>No hay cursos disponibles</p>';
+		return texto;
+	}
+	listado.forEach(curso =>{
 		texto = texto +
 				'<div class="column" style="background-color:#aaa;">'+
 		     	'<h3> Nombre: ' + curso.nombre + '</h3>'+
@@ -122,15 +75,12 @@ hbs.registerHelper('listarcursos',()=>{
 
 })
 
-hbs.registerHelper('matricularCursos',()=>{
-	listarCursos();
-
+hbs.registerHelper('matricularCursos',(listado)=>{
 	let texto = '<div class="form-group">'+
-				'<label>Cursos</label>'+             
-          		'<select class="form-control" name="idcurso">'+
-				'<option value="-">-</option>';
+				'<label>Cursos   </label>'+             
+          		'<select class="form-control" name="idcurso">';
 				
-	listaCursos.forEach(curso=>{	
+	listado.forEach(curso=>{	
 
 			texto = texto +'<option value="' + curso.id + '">' + curso.nombre + '</option>';
 			});
@@ -139,17 +89,14 @@ hbs.registerHelper('matricularCursos',()=>{
 	return texto;
 })
 
-hbs.registerHelper('selectCursosDispo',()=>{
-	listarCursos();
+hbs.registerHelper('selectCursosDispo',(listado)=>{
 	let texto='';
-	let curs = listaCursos.filter(buscar => buscar.estado == 'disponible')
-	if(curs.length !=0){
+	if(listado.length !=0){
 		 texto = '<div class="form-group">'+
 				'<label>Curso</label>'+             
-          		'<select class="form-control" name="id">'+
-				'<option value="-">-</option>';
+          		'<select class="form-control" name="id">';
 
-		curs.forEach(curso=> {	
+		listado.forEach(curso=> {	
 			texto = texto +'<option value="' + curso.id + '">' + curso.nombre + '</option>';
 		});
 		
@@ -168,66 +115,6 @@ hbs.registerHelper('actualizado',(id)=>{
 	return texto;
 })
 
-hbs.registerHelper('eliminar',(id)=>{
-	console.log(id);
-	listarCursos();
-	let texto = '';
-	let curs = listaCursos.filter(buscar => buscar.id != id)
-	listaCursos = curs;
-	guardar();
-	texto = 'El curso fué actualizado';
-	return texto;
-})
-const listarMatricular=() => {
-	try{
-		listaMatriculas = require('../matricula.json');
-	}
-	catch(error){
 
-		listaMatriculas = [];
-	}
-}
-
-const matricularM = ()=> {
-	let datos = JSON.stringify(listaMatriculas);
-	fs.writeFile('matricula.json', datos, (err)=>{
-		if(err) throw(err);
-		return('Matricula realizada con exito');
-	})
-}
-
-const listarCursos=() => {
-	try{
-		listaCursos = require('../listado.json');
-	}
-	catch(error){
-		listaCursos = [];
-	}
-}
-	
-const guardar = ()=> {
-	let datos = JSON.stringify(listaCursos);
-	fs.writeFile('listado.json', datos, (err)=>{
-		if(err) throw(err);
-		return('Curso creado con exito');
-	})
-}
-
-const mostrarcurso = ()=> {
-	listar();
-	let curs = listaCursos.filter(buscar => buscar.estado == 'disponible')
-	
-	if(curs.length ==0){
-		console.log('No hay cursos disponibles');
-	}
-	else{
-		console.log('Los cursos disponibles son:');
-		curs.forEach(curso => {
-			console.log('Nombre del curso: '+curso.nombre);
-			console.log(' Descripcion del curso: '+curso.descripcion);
-			console.log(' Valor del curso: '+curso.valor+'\n');
-		} )
-	}
-}
 
 
