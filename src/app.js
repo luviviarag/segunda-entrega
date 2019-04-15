@@ -4,6 +4,7 @@ const path = require('path');
 const hbs= require('hbs');
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
+process.env.URLDB = 'mongodb://localhost:27017/plataformavirtual'
 const mongoose = require('mongoose');
 const Curso = require('./modelos/curso');
 const Usuario = require('./modelos/usuario');
@@ -15,11 +16,12 @@ const directoriopublico = path.join(__dirname,'../public');
 const directoriopartials = path.join(__dirname, '../partials');
 const bcrypt = require('bcrypt');
 
+
 hbs.registerPartials(directoriopartials);
 app.use(express.static(directoriopublico));
 app.use(bodyParser.urlencoded({extended:false}))
 
-mongoose.connect('mongodb://localhost:27017/plataformavirtual',{useNewUrlParser: true},(err, resultado)=>{
+mongoose.connect(process.env.URLDB,{useNewUrlParser: true},(err, resultado)=>{
 	if(err){
 		return console.log(error)
 	}
