@@ -1,10 +1,9 @@
+require('./config/config');
 const express = require('express');
 const app = express();
 const path = require('path');
 const hbs= require('hbs');
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
-process.env.URLDB = 'mongodb://localhost:27017/plataformavirtual'
 const mongoose = require('mongoose');
 const Curso = require('./modelos/curso');
 const Usuario = require('./modelos/usuario');
@@ -241,6 +240,6 @@ app.post('/actualizado',(req, res)=>{
 		})
 	})	
 });
-app.listen(port,() =>{
-	console.log('Escuchando en el puerto' + port);
+app.listen(process.env.PORT,() =>{
+	console.log('Escuchando en el puerto' + process.env.PORT);
 } );
