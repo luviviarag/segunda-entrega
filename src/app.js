@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({extended:false}))
 
 mongoose.connect(process.env.URLDB,{useNewUrlParser: true},(err, resultado)=>{
 	if(err){
+		console.log("Error de conexion de base de datos");
 		return console.log(error)
 	}
 	console.log('conectado');
