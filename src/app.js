@@ -193,7 +193,8 @@ app.post('/registrado',(req, res)=>{
 		nombre:      req.body.nombre,
 		correo:      req.body.correo,
 		telefono:    req.body.telefono,
-		contrasena : bcrypt.hashSync(req.body.contrasena, 10)
+		contrasena : bcrypt.hashSync(req.body.contrasena, 10),
+		rol: req.body.rol,
 	})
 	usuario.save((err, resultado)=>{
 		if(err){
