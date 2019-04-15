@@ -20,7 +20,7 @@ hbs.registerPartials(directoriopartials);
 app.use(express.static(directoriopublico));
 app.use(bodyParser.urlencoded({extended:false}))
 
-mongoose.connect(process.env.URLDB,{uri_decode_auth: true},(err, resultado)=>{
+mongoose.connect(process.env.URLDB,{useNewUrlParser: true},(err, resultado)=>{
 	if(err){
 		console.log(process.env.URLDB);
 		console.log("Error de conexion de base de datos");
