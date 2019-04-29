@@ -9,12 +9,14 @@ const Curso = require('./modelos/curso');
 const Usuario = require('./modelos/usuario');
 const Matricula = require('./modelos/matricula');
 require('./helpers');
-const session = require('express-session')
-const MemoryStore = require('memorystore')(session)
+const multer = require('multer');
+const session = require('express-session');
+const MemoryStore = require('memorystore')(session);
 const directoriopublico = path.join(__dirname,'../public');
 const directoriopartials = path.join(__dirname, '../partials');
 const bcrypt = require('bcrypt');
-
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 hbs.registerPartials(directoriopartials);
 app.use(express.static(directoriopublico));
@@ -50,6 +52,7 @@ app.set('view engine','hbs');
 app.get('/',(req,res)=>{
 	res.render('index')
 });
+
 
 app.get('/actualizar',(req,res)=>{
 	Curso.find({estado : 'disponible'},(err,respuesta)=>{
@@ -136,6 +139,7 @@ app.post('/login', (req, res) => {
 		req.session.rol = resultados.rol
 		req.session.correo = resultados.correo
 		req.telefono = resultados.telefono
+		avatar = resultados.avatar.toString('base64')
 		if(resultados.rol =='coordinador'){
 			coordinador = true;
 			aspirante 	= false;
@@ -151,13 +155,16 @@ app.post('/login', (req, res) => {
 				interesado	= true;
 			}
 		}
+
 		res.render('login', {
 					mensaje : "Bienvenido " + resultados.nombre,
 					nombre : resultados.nombre,
 					coordinador,
 					aspirante,
 					interesado,
-					sesion : true						
+					avatar : avatar,
+					sesion : true
+					
 					})
 	})	
 })
@@ -177,19 +184,40 @@ app.post('/matricular',(req, res)=>{
 		nombre: 	  req.body.nombre,	
 		telefono:     req.body.telefono
 	})
+	
 	matricula.save((err, resultado)=>{
 		if(err){
 			res.render('matricular',{
 				matricular : err
 			})
 		}
+
+		Curso.find({id : parseInt(req.body.idcurso) },(err,respuesta)=>{
+			if (err){
+				return console.log(err)
+			}
+			let msg = {
+			to: req.body.correo,
+			from: 'luvivianaraujo@gmail.com',
+			subject: 'Confirmación matricula TDEA',
+			text: req.body.nombre + ' se ha matriculado en el curso ' + respuesta.nombre 
+				  + ' que tiene una duración de ' + respuesta.duración
+			      + ' con modalidad '+ respuesta.modalidad +
+			      'por un valor de ' + respuesta.valor                 
+			};
+			sgMail.send(msg);
+		})
+
 		res.render('matricular',{
 			matricular: 'Te has matriculado exitosamente'
 		})
 	})
 });
 
-app.post('/registrado',(req, res)=>{
+var upload = multer({})
+
+app.post('/registrado',upload.single('foto'),(req, res)=>{
+	
 	let usuario = new Usuario({
 		documento:    parseInt(req.body.documento),
 		nombre:      req.body.nombre,
@@ -197,6 +225,7 @@ app.post('/registrado',(req, res)=>{
 		telefono:    req.body.telefono,
 		contrasena : bcrypt.hashSync(req.body.contrasena, 10),
 		rol: req.body.rol,
+		avatar : req.file.buffer
 	})
 	usuario.save((err, resultado)=>{
 		if(err){
@@ -231,7 +260,6 @@ app.post('/crearcurso',(req, res)=>{
 	})
 });
 app.post('/actualizado',(req, res)=>{
-	console.log('entro a actualizar');
 	Curso.findOneAndUpdate({id : parseInt(req.body.id)}, { $set: { estado: 'cerrado' }}, {new : true, runValidators: true, context: 'query' }, (err, resultados) => {
 		if (err){
 			console.log('error al actualizar');
@@ -243,6 +271,45 @@ app.post('/actualizado',(req, res)=>{
 		})
 	})	
 });
+app.get('/contactanos',(req, res)=>{
+	res.render ('contactanos',{
+		documento : req.session.usuario,
+		nombre :  req.session.nombre,
+		telefono: req.session.telefono,
+		correo:   req.session.correo
+	})
+});
+app.post('/enviar',(req, res)=>{
+	Usuario.find({rol : 'coordinador'},(err, resultados) => {
+		if (err){
+			console.log('error al enviar su solicitud');
+			return console.log(err)
+		}
+		if(resultados.length > 0){
+			resultados.forEach(usuario =>{
+				console.log(usuario.correo);
+				let msg = {
+					to: usuario.correo,
+					from: req.body.correo,
+					subject: req.body.solicitud,
+					text: req.body.nombre + ' envía la siguiente solicitud ' + req.body.comentarios
+				};
+				sgMail.send(msg);
+			})
+			res.render ('enviar', {
+				mensaje : 'Muchas gracias por escribirnos, sus comentarios son muy impotantes para nosotros'
+			})
+		}
+		else{
+			res.render ('enviar', {
+				mensaje : 'No existen coordinadores para enviar su solicitud'
+			})
+		}
+		
+		
+	})	
+});
+
 app.listen(process.env.PORT,() =>{
 	console.log('Escuchando en el puerto' + process.env.PORT);
 } );

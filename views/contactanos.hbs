@@ -1,0 +1,40 @@
+{{>header}}
+  <body>
+  	<h1>Contactanos</h1>
+  	<form action="/enviar" method="post">
+  		<div>
+        <br>
+  			<input type="number" name="documento" placeholder="Número documento" required readonly value="{{documento}}">
+  		</div>
+  		<div>
+  			<br>
+        <input type="text" name="nombre" placeholder="Nombre completo" required readonly value="{{nombre}}">
+  		</div>
+  		<div>
+        <br>
+  			<input type="email" name="correo" placeholder="Correo" required  value="{{correo}}">
+  		</div>
+  		<div>
+        <br>
+  			<input type="text" name="telefono" placeholder="Teléfono" required  value="{{telefono}}">
+  		</div>
+      <div>
+        <select name="solicitud" >
+          <option value="informacion">Solicitud información</option>
+          <option value="queja">Queja</option>
+          <option value="reclamo">Reclamo</option>
+          <option value="reclamo">Sugerencia</option>
+        </select>
+      </div>
+      <div>
+        <br>
+        <textarea name="comentarios" rows="10" cols="40" >Escribe aquí tu solicitud</textarea>
+      </div>
+      <div>
+          <button >Enviar</button>
+      </div>
+  	
+  	</form>
+  
+  	
+   {{>footer}}

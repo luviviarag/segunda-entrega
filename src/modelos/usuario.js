@@ -28,6 +28,9 @@ const usuarioSchema = new Schema({
   rol :{
     type : String,
     default : 'aspirante'
+  },
+  avatar :{
+    type : Buffer
   }
 
 });

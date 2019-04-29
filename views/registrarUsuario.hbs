@@ -1,7 +1,7 @@
 {{>header}}
   <body>
   	<h1>Registrate</h1>
-  	<form action="/registrado" method="post">
+  	<form action="/registrado" method="post" enctype="multipart/form-data">
   		<div>
         <br>
   			<input type="number" name="documento" placeholder="Número documento" required >
@@ -12,7 +12,7 @@
   		</div>
   		<div>
         <br>
-  			<input type="text" name="correo" placeholder="Correo" required>
+  			<input type="email" name="correo" placeholder="Correo" required>
   		</div>
   		<div>
         <br>
@@ -21,6 +21,9 @@
       <div>
         <br>
         <input type="password" name="contrasena" placeholder="Contraseña" required>
+      </div>
+      <div>
+        <input type="file" name="foto" required>
       </div>
        <select name="rol" >
           <option value="aspirante">Aspirante</option>
